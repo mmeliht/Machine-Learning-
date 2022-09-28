@@ -79,22 +79,43 @@ RMSE_test
 np.sqrt(np.mean(-cross_val_score(ridge_model, X_test,y_test, cv=10, scoring="neg_mean_squared_error")))
 
 
+#Model Tuning
+
+ridge_model=Ridge(1).fit(X_train,y_train)
+y_pred=ridge_model.predict(X_test)
+np.sqrt(mean_squared_error(y_test,y_pred))
+
+lambdalar1=np.random.randint(0,1000,100)
+lambdalar2=10**np.linspace(10,-2,100)*0.5
+
+#lambdalar2 için
+ridgecv=RidgeCV(alphas=lambdalar2, scoring="neg_mean_squared_error", cv=10, normalize=True)
+ridgecv.fit(X_train,y_train)
+
+ridgecv.alpha_
+
+#final modeli
+
+ridge_tuned=Ridge(alpha=ridgecv.alpha_).fit(X_train, y_train)
+
+#final test hatası
+y_pred=ridge_tuned.predict(X_test)
+np.sqrt(mean_squared_error(y_test,y_pred))
 
 
+#lambdalar1 için
 
+ridgecv=RidgeCV(alphas=lambdalar1, scoring="neg_mean_squared_error", cv=10, normalize=True)
+ridgecv.fit(X_train,y_train)
 
+ridgecv.alpha_
+#final modeli
 
+ridge_tuned=Ridge(alpha=ridgecv.alpha_).fit(X_train, y_train)
 
-
-
-
-
-
-
-
-
-
-
+#final test hatası
+y_pred=ridge_tuned.predict(X_test)
+np.sqrt(mean_squared_error(y_test,y_pred))
 
 
 
